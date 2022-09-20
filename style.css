@@ -12,10 +12,14 @@ html, body{
     background-color: #e2e8f0;
 }
 
+header {
+    font-family: 'Blaka Ink', cursive;
+    font-size: 35px;
+}
+
 header , footer {
     /* background-color: blue; */
     color: white;
-    font-size: 24px;
     display: flex;
     align-items: center;
     padding: 12px;
@@ -40,6 +44,7 @@ header , footer {
 
 .card img {
     width: 100%;
+    height: auto;
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
 }
