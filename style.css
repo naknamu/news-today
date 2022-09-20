@@ -12,13 +12,14 @@ html, body{
     background-color: #e2e8f0;
 }
 
-header {
+/* header {
     font-family: 'Blaka Ink', cursive;
     font-size: 35px;
-}
+} */
 
 header , footer {
-    /* background-color: blue; */
+    font-family: 'Blaka Ink', cursive;
+    font-size: 35px;
     color: white;
     display: flex;
     align-items: center;
@@ -40,6 +41,11 @@ header , footer {
     border-radius: 8px;
     width: 100%;
     display: grid;
+}
+
+.card:hover{
+    transform: translateY(-4px);
+    box-shadow: rgba(0, 0, 0, 0.16) 5px 5px 5px 5px;
 }
 
 .card img {

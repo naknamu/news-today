@@ -1,38 +1,115 @@
-let image_source = [];
+let news = {
+    link: [],
+    image: [],
+    title: [],
+    description: [],
+    publisher: [],
+    pubDate: []
+}
 
-fetch('https://newsdata.io/api/1/news?apikey=pub_1145725872fd78d5a00ae0ad5fc25d8f4c3b4&language=en', {mode: 'cors'})
+let language = 'en';
+
+let chooseCategory = () => {
+    let random_number = Math.floor(Math.random() * 6);
+    console.log(random_number);
+    switch(random_number) {
+        case 0:
+            return category.zero;
+        case 1:
+            return category.one;
+        case 2:
+            return category.two;
+        case 3:
+            return category.three;
+        case 4:
+            return category.four;
+        case 5:
+            return category.five;
+    }
+}
+
+let category = {
+    zero: 'entertainment',
+    one: 'environment',
+    two: 'food',
+    three: 'sports',
+    four: 'top',
+    five: 'world'
+}
+
+let url_news = 'https://newsdata.io/api/1/news?apikey=pub_1145725872fd78d5a00ae0ad5fc25d8f4c3b4' +
+                '&language=' + language + 
+                '&category=' + category.four;
+
+
+let fetchNewsReddit = () => {
+    /**REDDIT NEWS **/
+    fetch('https://www.reddit.com/r/news.json')
+    .then((response) => (response.json()))
     .then(function(response) {
-    return response.json();
+        // console.log(response.data.children.length);
+        for(let i=0; i<response.data.children.length; i++)
+        {
+            // console.log(response.data.children[i].data);
+            news.link[i] = response.data.children[i].data.url;
+            news.title[i] = response.data.children[i].data.title;
+            news.publisher[i] = response.data.children[i].data.domain;
+            createCard(news.link[i], news.image[i], news.title[i], news.description[i], news.publisher[i], news.pubDate[i]);
+        }
+    })
+}
+
+let fetchNewsAPIOrg = () => {
+    fetch(url_news, {mode: 'cors'})
+    .then(function(response) {
+        return response.json();
     })
     .then(function(response) {
+        console.log(response);
+        getDataFromNewsAPIOrg(response);
+    })
+    .catch((error) => console.log(error));
+}
 
-    console.log(response);
-    console.log(response.results.length);
+/**NEWS API ORG */
+Promise.all([
+    fetchNewsAPIOrg(),
+    fetchNewsReddit()
+])
 
+let getDataFromNewsAPIOrg = (response) => {
     for(let i=0; i<response.results.length; i++){
-        if(response.results[i].image_url === null) {
-            image_source[i] = 'images/faker_thumb.png';
-        } else {
-            image_source[i] = response.results[i].image_url;
-        }
-        createCard(image_source[i], response.results[i].title, response.results[i].description, response.results[i].creator, response.results[i].pubDate);
+        //substitute data value to object array
+        news.link[i] = response.results[i].link;
+        news.image[i] = response.results[i].image_url;
+        news.title[i] = response.results[i].title;
+        news.description[i] = response.results[i].description;
+        news.publisher[i] = response.results[i].source_id;
+        news.pubDate[i] = response.results[i].pubDate;
+        //call create card for each news article
+        createCard(news.link[i], news.image[i], news.title[i], news.description[i], news.publisher[i], news.pubDate[i]);
     }
-    console.log(image_source);
-    }).catch((error) => console.log(error));
-    
+}
 
-
-
-let createCard = (image_source, headline_text, details_text, publisher_text, date_text) => {
+/**Function to CREATE NEWS CARD DYNAMICALLY **/
+let createCard = (link, image_source, headline_text, details_text, publisher_text, date_text) => {
     const content = document.querySelector('.content');
     //create card
     const card = document.createElement('div');
     content.appendChild(card);
     card.classList.add('card');
+    card.addEventListener('click', () => {
+        console.log('im clicked!');
+        url = link;
+        window.open(url, '_blank').focus();
+    });
     //create image
-    const img = document.createElement('img');
-    img.src = image_source;
-    card.appendChild(img);
+    // console.log(image_source);
+    if (image_source !== null && image_source !== undefined) {
+        const img = document.createElement('img');
+        img.src = image_source;
+        card.appendChild(img);
+    }
     //create headline
     const headline = document.createElement('div');
     headline.textContent = headline_text;
@@ -62,3 +139,12 @@ let createCard = (image_source, headline_text, details_text, publisher_text, dat
     date.classList.add('date');
     wrapper.appendChild(date);
 }
+
+/*Test card*/
+// const card = document.querySelector('.card');
+
+// card.addEventListener('click', () => {
+//     console.log('im clicked!');
+//     url = 'https://google.com'
+//     window.open(url, '_blank').focus();
+// });
