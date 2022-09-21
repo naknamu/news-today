@@ -1,3 +1,5 @@
+import api_key from 'keys.js';
+
 let news = {
     link: [],
     image: [],
@@ -37,7 +39,7 @@ let category = {
     five: 'world'
 }
 
-let url_news = 'https://newsdata.io/api/1/news?apikey=pub_1145725872fd78d5a00ae0ad5fc25d8f4c3b4' +
+let url_news = 'https://newsdata.io/api/1/news?apikey=' + api_key +
                 '&language=' + language + 
                 '&category=' + category.four;
 
