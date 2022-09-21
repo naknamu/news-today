@@ -44,7 +44,7 @@ let url_news = 'https://newsdata.io/api/1/news?apikey=' + api_key.newsapiorg +
                 '&language=' + language + 
                 '&category=' + category.four;
 
-console.log(api_key.newsapiorg);
+// console.log(api_key.newsapiorg);
 
 let fetchNewsReddit = () => {
     /**REDDIT NEWS **/
@@ -69,7 +69,7 @@ let fetchNewsAPIOrg = () => {
         return response.json();
     })
     .then(function(response) {
-        console.log(response);
+        // console.log(response);
         getDataFromNewsAPIOrg(response);
     })
     .catch((error) => console.log(error));
