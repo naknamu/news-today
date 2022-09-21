@@ -1,4 +1,5 @@
-import api_key from 'keys.js';
+import api_key from './keys';
+import './style.css';
 
 let news = {
     link: [],
@@ -39,10 +40,11 @@ let category = {
     five: 'world'
 }
 
-let url_news = 'https://newsdata.io/api/1/news?apikey=' + api_key +
+let url_news = 'https://newsdata.io/api/1/news?apikey=' + api_key.newsapiorg +
                 '&language=' + language + 
                 '&category=' + category.four;
 
+console.log(api_key.newsapiorg);
 
 let fetchNewsReddit = () => {
     /**REDDIT NEWS **/
@@ -76,7 +78,7 @@ let fetchNewsAPIOrg = () => {
 /**NEWS API ORG */
 Promise.all([
     fetchNewsAPIOrg(),
-    fetchNewsReddit()
+    // fetchNewsReddit()
 ])
 
 let getDataFromNewsAPIOrg = (response) => {
