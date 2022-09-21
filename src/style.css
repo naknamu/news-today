@@ -12,20 +12,25 @@ html, body{
     background-color: #e2e8f0;
 }
 
-/* header {
+header {
     font-family: 'Blaka Ink', cursive;
-    font-size: 35px;
-} */
-
-header , footer {
-    font-family: 'Blaka Ink', cursive;
-    font-size: 35px;
-    color: white;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     padding: 12px;
-    color: blue;
-    font-weight: bold;
+    gap: 8px;
+}
+
+header #search{
+    padding: 8px 16px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+}
+
+header .searchbar{
+    display: flex;
 }
 
 .content{
@@ -73,6 +78,13 @@ header , footer {
     font-size: 12px;
     gap: 8px;
     margin-bottom: 5px;
+}
+
+footer{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 16px;
+    padding: 12px;
+    color: gray;
 }
 
 
