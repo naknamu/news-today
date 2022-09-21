@@ -1,5 +1,5 @@
-# news_today
+# News Today
 A website that uses NEWS API to get current news today.
 
-#Live Website
+# Live Website
 https://naknamu.github.io/news_today/
