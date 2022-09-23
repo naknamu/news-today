@@ -15,12 +15,29 @@ import {
   url_news_five,
   url_news_random,
 } from "./variables";
+import { formatRelative, intervalToDuration } from 'date-fns';
+import enGB from 'date-fns/locale/en-GB';
+
+const formatRelativeLocale = {
+  lastWeek: "'Last' eeee",
+  yesterday: "'Yesterday'",
+  today: "haaa",
+  tomorrow: "'Tomorrow'",
+  nextWeek: "'Next' eeee",
+  other: 'iii, MMM dd, yyyy',
+};
+
+const locale = {
+  ...enGB,
+  formatRelative: (token) => formatRelativeLocale[token],
+};
 
 /**Locate main div content in DOM*/
 const content = document.querySelector(".content");
 
 //**FETCH DATA FROM NEWS API */
-async function fetchNewsAPIOrg(url_news) {
+async function fetchNewsData(url_news) {
+
   //showing loading animation
   createLoadingAnimation(content);
 
@@ -34,14 +51,14 @@ async function fetchNewsAPIOrg(url_news) {
     //otherwise delete loading animation
     deleteLoadingAnimation();
     //get data from NEWS API and create HTML news card elements
-    getDataFromNewsAPIOrg(newsData);
+    getDataFromNewsData(newsData);
   }
 
   return newsData;
 }
 
 /*SUBSTITUTE VALUE FROM API DATA TO CREATE DOM ELEMENTS**/
-let getDataFromNewsAPIOrg = (response) => {
+let getDataFromNewsData = (response) => {
   for (let i = 0; i < response.results.length; i++) {
     //substitute data value to object array
     news.link[i] = response.results[i].link;
@@ -50,6 +67,10 @@ let getDataFromNewsAPIOrg = (response) => {
     news.description[i] = response.results[i].description;
     news.publisher[i] = response.results[i].source_id;
     news.pubDate[i] = response.results[i].pubDate;
+
+    /*TEST*/
+    convertDateDuration(news.pubDate[i], i);
+
     //call create card for each news article
     createCard(
       news.link[i],
@@ -64,10 +85,11 @@ let getDataFromNewsAPIOrg = (response) => {
 
 /**WHEN WINDOW IS FIRST LOADED, THIS FUNCTION IS CALLED */
 window.onload = () => {
+
   /**NEWS API ORG */
   Promise.all([
     //default news that will be loaded will be from top news
-    fetchNewsAPIOrg(url_news_four),
+    fetchNewsData(url_news_four),
   ]);
 };
 
@@ -83,11 +105,29 @@ search.addEventListener("keypress", (e) => {
       search_input = search.value;
       let url_news_query =
         "https://newsdata.io/api/1/news?apikey=" +
-        api_key.newsapiorg +
+        api_key.newsdata +
         "&language=" +
         language +
         "&q=" +
         search_input;
-      fetchNewsAPIOrg(url_news_query);
+      fetchNewsData(url_news_query);
     }
   });
+
+  let convertDateDuration = (endDate, i) => {
+
+    let duration = intervalToDuration({
+      start: new Date(),
+      end: new Date(endDate)
+    })
+
+    if (duration.days === 0) {
+      news.pubDate[i] = duration.hours + ' hours ago';
+    } else if (duration.days === 1) {
+      news.pubDate[i] = duration.days + ' day ago';
+    } else {
+      news.pubDate[i] = duration.days + ' days ago';
+    }
+
+  }
+

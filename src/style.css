@@ -101,6 +101,7 @@ footer{
     font-size: 16px;
     padding: 12px;
     color: gray;
+    text-align: center;
 }
 
 /*LOADING ANIMATION*/
@@ -183,6 +184,33 @@ span:before
   100%
   {
     transform:rotate(405deg);
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  html, body {
+    background-color: lightblue;
+    height: 100%;
+  }
+
+  html{
+    display: flex;
+    align-items: center;
+  }
+
+  body{
+    width: 60%;
+  }
+
+  header h1 {
+    font-size: 50px;
+  }
+  .headline{
+    font-size: 22px;
+  }
+
+  .details, .wrapper {
+    font-size: 16px;
   }
 }
 
